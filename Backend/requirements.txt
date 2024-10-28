@@ -9,7 +9,7 @@ pandas
 # youtube-dl
 nltk
 flask
-pickle
+# pickle
 datetime
 PyPDF2
 flask_cors
