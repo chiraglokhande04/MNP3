@@ -204,5 +204,3 @@ def calculate_resume_score(resume_data, no_of_pages, skills, reco_field):
         score += 10
     return min(score, 100)
 
-if __name__ == '__main__':
-    app.run(port=5000, debug=True)
