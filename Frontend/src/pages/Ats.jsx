@@ -20,21 +20,17 @@ const Ats = () => {
   console.log(resumeData);
 
   return (
-    <div className="flex flex-col ">
+    <div className="flex flex-col min-h-screen">
       <Navbar />
-      
 
-      <div className="flex items-center justify-center">
+      <div className="flex items-center justify-center flex-grow p-4">
         {!resumeData ? (
-          <div className='flex flex-col'>
-          <h1 className="text-5xl text-center font-poppins text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-blue-500 mt-10 animate-bounce ">
-             Check Your Resume Score !!!
-          </h1>
-          <FileUpload onUploadSuccess={handleUploadSuccess} />
-          
+          <div className='flex flex-col items-center w-full max-w-lg'>
+            <h1 className="text-5xl text-center font-poppins text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-blue-500 mt-10 animate-bounce">
+              Check Your Resume Score !!!
+            </h1>
+            <FileUpload onUploadSuccess={handleUploadSuccess} />
           </div>
-          
-
         ) : (
           <ResumeInfo
             resumeScore={resumeData.resume_score}
