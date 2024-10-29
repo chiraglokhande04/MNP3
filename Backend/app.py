@@ -73,56 +73,99 @@ CORS(app, resources={r"/*": {"origins": "*", "methods": ["GET", "POST"]}})
 
 
 
-
-# Sample data in case df.pkl is not available
-from flask import Flask, jsonify, request
-import pandas as pd
-
-app = Flask(__name__)
-
 # Load data from sample_data directly
 sample_data = [
+    # Software Engineering roles
     {"Title": "Software Engineer", "Company": "TechCorp", "Job.Description": "Develop and maintain software applications.", "Status": "open"},
     {"Title": "Software Engineer", "Company": "Innovatech", "Job.Description": "Work on core product development and code optimization.", "Status": "closed"},
-    {"Title": "Software Engineer", "Company": "CodeCrafters", "Job.Description": "Build scalable solutions in a team environment.", "Status": "open"},
-    {"Title": "Software Engineer", "Company": "NextGenSoft", "Job.Description": "Develop software solutions for real-time analytics.", "Status": "open"},
-    {"Title": "Software Engineer", "Company": "Cloudify", "Job.Description": "Integrate software with cloud services.", "Status": "closed"},
+    {"Title": "Backend Developer", "Company": "CodeCrafters", "Job.Description": "Build and maintain scalable backend systems.", "Status": "open"},
+    {"Title": "Frontend Developer", "Company": "WebDynamics", "Job.Description": "Create interactive user interfaces with React.", "Status": "open"},
+    {"Title": "Full Stack Developer", "Company": "NextGenSoft", "Job.Description": "Develop both client and server software.", "Status": "open"},
 
-    # Web Developer jobs
+    # Web Development roles
     {"Title": "Web Developer", "Company": "WebWizards", "Job.Description": "Create and maintain websites and web applications.", "Status": "open"},
     {"Title": "Front-End Developer", "Company": "NetDesigns", "Job.Description": "Develop UI/UX for web platforms.", "Status": "closed"},
     {"Title": "Back-End Developer", "Company": "StackBuild", "Job.Description": "Manage server-side web logic and databases.", "Status": "open"},
-    {"Title": "Full Stack Developer", "Company": "SiteGenius", "Job.Description": "Build and maintain both front-end and back-end of web applications.", "Status": "open"},
+    {"Title": "UI/UX Designer", "Company": "CreatiDesign", "Job.Description": "Design user-friendly interfaces for web and mobile apps.", "Status": "open"},
     {"Title": "Web Developer", "Company": "PixelPerfect", "Job.Description": "Design responsive web pages.", "Status": "closed"},
 
-    # App Developer jobs
+    # App Development roles
     {"Title": "App Developer", "Company": "Appify", "Job.Description": "Develop and maintain mobile applications.", "Status": "open"},
     {"Title": "iOS Developer", "Company": "AppleSoft", "Job.Description": "Build and optimize apps for iOS devices.", "Status": "closed"},
     {"Title": "Android Developer", "Company": "DroidMakers", "Job.Description": "Create applications for the Android platform.", "Status": "open"},
-    {"Title": "App Developer", "Company": "MobilityLabs", "Job.Description": "Maintain existing apps and fix bugs.", "Status": "open"},
-    {"Title": "Cross-Platform Developer", "Company": "FlexiApps", "Job.Description": "Build apps that run on multiple platforms.", "Status": "closed"},
+    {"Title": "Cross-Platform Developer", "Company": "FlexiApps", "Job.Description": "Develop applications that work on multiple platforms.", "Status": "closed"},
+    {"Title": "React Native Developer", "Company": "MobileHub", "Job.Description": "Build mobile applications with React Native.", "Status": "open"},
 
-    # Data Scientist jobs
+    # Data Science roles
     {"Title": "Data Scientist", "Company": "DataMine", "Job.Description": "Analyze large data sets to derive insights.", "Status": "open"},
     {"Title": "Machine Learning Engineer", "Company": "SmartAnalytics", "Job.Description": "Develop ML algorithms for data analysis.", "Status": "closed"},
-    {"Title": "Data Scientist", "Company": "InsightHub", "Job.Description": "Work on predictive modeling and data analysis.", "Status": "open"},
     {"Title": "Data Analyst", "Company": "MetricSphere", "Job.Description": "Extract and interpret data trends for business decisions.", "Status": "open"},
     {"Title": "Data Engineer", "Company": "DataFlow", "Job.Description": "Develop and optimize data pipelines.", "Status": "closed"},
+    {"Title": "AI Engineer", "Company": "DeepVision", "Job.Description": "Build AI-driven solutions for image processing.", "Status": "open"},
 
-    # ML Engineer jobs
+    # Machine Learning and AI roles
     {"Title": "ML Engineer", "Company": "MLLab", "Job.Description": "Develop machine learning models and pipelines.", "Status": "open"},
     {"Title": "AI Researcher", "Company": "DeepMindLab", "Job.Description": "Research and develop deep learning solutions.", "Status": "closed"},
-    {"Title": "ML Engineer", "Company": "Algorithmics", "Job.Description": "Create and maintain ML models for product use.", "Status": "open"},
     {"Title": "Deep Learning Engineer", "Company": "VisionAI", "Job.Description": "Develop CNN models for image processing.", "Status": "open"},
     {"Title": "NLP Engineer", "Company": "SpeakTech", "Job.Description": "Build NLP solutions for text data.", "Status": "closed"},
+    {"Title": "Robotics Engineer", "Company": "AutoBotics", "Job.Description": "Design and develop algorithms for robotic automation.", "Status": "open"},
 
-    # Other fields
-    {"Title": "Network Engineer", "Company": "NetSecure", "Job.Description": "Manage and maintain network infrastructure.", "Status": "open"},
-    {"Title": "Cybersecurity Analyst", "Company": "SecureSphere", "Job.Description": "Monitor and secure network and data systems.", "Status": "closed"},
+    # DevOps and System Administration roles
     {"Title": "DevOps Engineer", "Company": "CloudOps", "Job.Description": "Automate deployment and monitoring processes.", "Status": "open"},
     {"Title": "System Administrator", "Company": "SysManage", "Job.Description": "Maintain servers and IT systems.", "Status": "open"},
-    {"Title": "Product Manager", "Company": "InnoSoft", "Job.Description": "Oversee product development from concept to launch.", "Status": "closed"}
+    {"Title": "Network Engineer", "Company": "NetSecure", "Job.Description": "Manage and maintain network infrastructure.", "Status": "open"},
+    {"Title": "Cloud Architect", "Company": "Cloudify", "Job.Description": "Design and oversee cloud solutions.", "Status": "closed"},
+    {"Title": "Cybersecurity Specialist", "Company": "SecureSphere", "Job.Description": "Monitor and secure network and data systems.", "Status": "closed"},
+
+    # Product and Project Management roles
+    {"Title": "Product Manager", "Company": "InnoSoft", "Job.Description": "Oversee product development from concept to launch.", "Status": "closed"},
+    {"Title": "Project Manager", "Company": "PlanIt", "Job.Description": "Coordinate teams to meet project goals and timelines.", "Status": "open"},
+    {"Title": "Technical Program Manager", "Company": "TechLead", "Job.Description": "Manage technical programs across multiple teams.", "Status": "open"},
+    {"Title": "Scrum Master", "Company": "AgilePath", "Job.Description": "Facilitate Agile processes for development teams.", "Status": "closed"},
+    {"Title": "Business Analyst", "Company": "InsightGen", "Job.Description": "Analyze business requirements and document solutions.", "Status": "open"},
+    {"Title": "Software Engineer", "Company": "TechGlobal", "Job.Description": "Design and develop scalable software solutions.", "Status": "open"},
+    {"Title": "UI/UX Designer", "Company": "CreativeMinds", "Job.Description": "Enhance user experience with creative design solutions.", "Status": "open"},
+    {"Title": "Data Analyst", "Company": "InsightfulData", "Job.Description": "Analyze data trends to support business decisions.", "Status": "closed"},
+    {"Title": "Business Intelligence Analyst", "Company": "BIWorks", "Job.Description": "Develop BI dashboards and data reports for strategic insights.", "Status": "open"},
+    {"Title": "Network Security Specialist", "Company": "SecureNet", "Job.Description": "Implement security protocols to protect network systems.", "Status": "closed"},
+    {"Title": "Blockchain Developer", "Company": "CryptoLab", "Job.Description": "Design and develop blockchain-based applications.", "Status": "open"},
+    {"Title": "Full Stack Engineer", "Company": "CodeWorld", "Job.Description": "Develop client and server-side applications.", "Status": "open"},
+    {"Title": "Game Developer", "Company": "PlaySmart", "Job.Description": "Create engaging video game experiences for various platforms.", "Status": "closed"},
+    {"Title": "Cloud Architect", "Company": "SkyHighTech", "Job.Description": "Design cloud infrastructure for scalable applications.", "Status": "open"},
+    {"Title": "IT Project Manager", "Company": "ITWorks", "Job.Description": "Coordinate and manage IT projects to ensure timely delivery.", "Status": "open"},
+
+    # Data Science and Machine Learning Jobs
+    {"Title": "Data Scientist", "Company": "DataInnovators", "Job.Description": "Model data to extract actionable insights.", "Status": "open"},
+    {"Title": "ML Engineer", "Company": "AI Frontier", "Job.Description": "Develop machine learning models for predictive analytics.", "Status": "closed"},
+    {"Title": "NLP Engineer", "Company": "Textify", "Job.Description": "Build natural language processing tools for text data analysis.", "Status": "open"},
+    {"Title": "Computer Vision Engineer", "Company": "VisionaryTech", "Job.Description": "Develop vision-based AI solutions.", "Status": "closed"},
+    {"Title": "Big Data Engineer", "Company": "DataFlow Solutions", "Job.Description": "Build large-scale data pipelines for analysis.", "Status": "open"},
+
+    # Cybersecurity and IT Infrastructure Jobs
+    {"Title": "Cybersecurity Analyst", "Company": "SafeNet", "Job.Description": "Monitor and defend against cybersecurity threats.", "Status": "closed"},
+    {"Title": "System Engineer", "Company": "ComputeSys", "Job.Description": "Maintain and optimize IT systems and infrastructure.", "Status": "open"},
+    {"Title": "Cloud Security Specialist", "Company": "CloudSecure", "Job.Description": "Ensure data and applications are secure in cloud environments.", "Status": "open"},
+    {"Title": "IT Support Technician", "Company": "TechAssist", "Job.Description": "Provide technical support and troubleshooting.", "Status": "closed"},
+
+    # Commerce and Business Jobs
+    {"Title": "Financial Analyst", "Company": "FinanceFirst", "Job.Description": "Analyze financial data to guide business decisions.", "Status": "open"},
+    {"Title": "Accountant", "Company": "Numbers & Co", "Job.Description": "Manage accounts and financial statements.", "Status": "closed"},
+    {"Title": "Sales Executive", "Company": "SalesForce", "Job.Description": "Drive sales and manage client relationships.", "Status": "open"},
+    {"Title": "Marketing Specialist", "Company": "MarketPros", "Job.Description": "Develop and execute marketing campaigns.", "Status": "open"},
+    {"Title": "Operations Manager", "Company": "BizOps", "Job.Description": "Oversee and optimize daily business operations.", "Status": "closed"},
+    {"Title": "Human Resources Manager", "Company": "PeopleFirst", "Job.Description": "Manage recruitment, training, and employee relations.", "Status": "open"},
+    {"Title": "Supply Chain Analyst", "Company": "SupplyNet", "Job.Description": "Analyze and optimize supply chain processes.", "Status": "closed"},
+    {"Title": "Product Manager", "Company": "Innovate Inc.", "Job.Description": "Oversee product development from concept to launch.", "Status": "open"},
+    {"Title": "Customer Support Specialist", "Company": "HelpDesk", "Job.Description": "Assist customers and resolve inquiries.", "Status": "closed"},
+
+    # Other Specialized Roles
+    {"Title": "Real Estate Analyst", "Company": "PropertyPros", "Job.Description": "Evaluate market trends for real estate investments.", "Status": "open"},
+    {"Title": "Investment Banker", "Company": "FinanceHub", "Job.Description": "Manage investment portfolios and provide financial advice.", "Status": "closed"},
+    {"Title": "Supply Chain Manager", "Company": "LogiCorp", "Job.Description": "Oversee logistics and supply chain operations.", "Status": "open"},
+    {"Title": "Data Privacy Consultant", "Company": "PrivacyGuard", "Job.Description": "Advise on data protection and privacy compliance.", "Status": "open"},
+    {"Title": "Quality Assurance Specialist", "Company": "TechQuality", "Job.Description": "Ensure products meet quality standards.", "Status": "closed"}
 ]
+
 
 
 # Convert sample_data to a DataFrame
@@ -142,39 +185,33 @@ def recommendation(title):
         print("Error: 'Title' column missing.")
         return []
 
-    # Check if the title is in the dataset and provide recommendations
-    if title in df['Title'].str.lower().values:
-        try:
-            idx = df[df['Title'].str.lower() == title].index[0]
-            if similarity and idx < len(similarity):
-                distances = similarity[idx]
-                similar_jobs = sorted(list(enumerate(distances)), key=lambda x: x[1], reverse=True)[1:21]
-            else:
-                similar_jobs = [(i, 1) for i in range(len(df)) if i != idx]  # All jobs if no similarity matrix
-            
-            # Generate a list of jobs with relevant fields
-            jobs = [
-                {
-                    'Title': df.iloc[i].Title,
-                    'Company': df.iloc[i].Company,
-                    'Status': df.iloc[i].Status,
-                    'JobDescription': df.iloc[i]['Job.Description']
-                }
-                for i, _ in similar_jobs if i < len(df) and 'Job.Description' in df.columns
-            ]
-            return jobs if jobs else "No similar jobs found."
+    # Filter DataFrame for exact matches on title
+    exact_matches = df[df['Title'].str.lower() == title]
+    if not exact_matches.empty:
+        idx = exact_matches.index[0]
+        distances = similarity[idx] if idx < len(similarity) else [1] * len(df)
+        similar_jobs = sorted(list(enumerate(distances)), key=lambda x: x[1], reverse=True)[1:21]
 
-        except IndexError:
-            print("Job title not found in DataFrame.")
-            return []
+        # Only recommend jobs with the exact title
+        jobs = [
+            {
+                'Title': df.iloc[i].Title,
+                'Company': df.iloc[i].Company,
+                'Status': df.iloc[i].Status,
+                'JobDescription': df.iloc[i]['Job.Description']
+            }
+            for i, _ in similar_jobs if i < len(df) and df.iloc[i].Title.lower() == title
+        ]
+        return jobs if jobs else "No similar jobs found."
+    
+    # If no exact match, look for partial matches
+    matches = df[df['Title'].str.lower().str.contains(title)]
+    if not matches.empty:
+        jobs = matches[['Title', 'Company', 'Status', 'Job.Description']].to_dict(orient='records')
+        return jobs
     else:
-        # Return jobs that have titles matching similar names in dataset
-        matches = df[df['Title'].str.lower().str.contains(title)]
-        if not matches.empty:
-            jobs = matches[['Title', 'Company', 'Status', 'Job.Description']].to_dict(orient='records')
-            return jobs
-        else:
-            return "Job title not found in dataset."
+        return "Job title not found in dataset."
+
 
 # API endpoint
 @app.route('/recommend', methods=['POST'])
@@ -182,21 +219,21 @@ def recommend_jobs():
     try:
         data = request.json
         job_title = data.get('title')
+        
         if not job_title:
             return jsonify({'status': 'failure', 'message': 'Job title is required'}), 400
 
+        # Call the recommendation function
         recommendations = recommendation(job_title)
-        if recommendations:
-            return jsonify({'status': 'success', 'recommendations': recommendations})
+
+        # Check if recommendations were found
+        if isinstance(recommendations, list) and recommendations:
+            return jsonify({'status': 'success', 'recommendations': recommendations}), 200
         else:
-            return jsonify({'status': 'failure', 'message': 'Job title not found or no recommendations available'}), 404
+            return jsonify({'status': 'failure', 'message': recommendations}), 404
+
     except Exception as e:
         return jsonify({'status': 'failure', 'message': str(e)}), 500
-
-if __name__ == '__main__':
-    app.run(debug=True)
-
-
 
 
 # ---- ATS Checker ---- #
