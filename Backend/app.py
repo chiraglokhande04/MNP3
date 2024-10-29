@@ -75,6 +75,12 @@ CORS(app, resources={r"/*": {"origins": "*", "methods": ["GET", "POST"]}})
 
 
 # Sample data in case df.pkl is not available
+from flask import Flask, jsonify, request
+import pandas as pd
+
+app = Flask(__name__)
+
+# Load data from sample_data directly
 sample_data = [
     {"Title": "Software Engineer", "Company": "TechCorp", "Job.Description": "Develop and maintain software applications.", "Status": "open"},
     {"Title": "Software Engineer", "Company": "Innovatech", "Job.Description": "Work on core product development and code optimization.", "Status": "closed"},
@@ -119,30 +125,14 @@ sample_data = [
 ]
 
 
-# Try loading from file, or fall back to sample data
-try:
-    df_from_file = pd.read_pickle('df.pkl')
-except Exception as e:
-    print(f"Error loading df.pkl: {e}")
-    df_from_file = pd.DataFrame()  # Empty DataFrame if loading fails
+# Convert sample_data to a DataFrame
+df = pd.DataFrame(sample_data)
 
-# Combine df_from_file with sample_data into a single DataFrame
-df_sample = pd.DataFrame(sample_data)
-df = pd.concat([df_from_file, df_sample], ignore_index=True).drop_duplicates(subset=['Title', 'Position', 'Company'])
-
-# Load similarity matrix if available
-try:
-    similarity = pickle.load(open('similarity.pkl', 'rb'))
-except Exception as e:
-    print(f"Error loading similarity.pkl: {e}")
-    similarity = None  # Fallback if similarity is not available
+# Dummy similarity matrix for recommendation (to avoid loading from 'similarity.pkl')
+similarity = [[1 for _ in range(len(df))] for _ in range(len(df))]  # Placeholder, assuming all jobs are equally similar
 
 # Recommendation function
 def recommendation(title):
-    if df is None or similarity is None:
-        print("DataFrame or similarity matrix not loaded.")
-        return []
-
     title = title.strip().lower()
     df.reset_index(drop=True, inplace=True)
     df.columns = df.columns.str.strip()
@@ -156,7 +146,7 @@ def recommendation(title):
     if title in df['Title'].str.lower().values:
         try:
             idx = df[df['Title'].str.lower() == title].index[0]
-            if similarity is not None and idx < len(similarity):
+            if similarity and idx < len(similarity):
                 distances = similarity[idx]
                 similar_jobs = sorted(list(enumerate(distances)), key=lambda x: x[1], reverse=True)[1:21]
             else:
@@ -166,7 +156,6 @@ def recommendation(title):
             jobs = [
                 {
                     'Title': df.iloc[i].Title,
-                    'Position': df.iloc[i].Position,
                     'Company': df.iloc[i].Company,
                     'Status': df.iloc[i].Status,
                     'JobDescription': df.iloc[i]['Job.Description']
@@ -182,7 +171,7 @@ def recommendation(title):
         # Return jobs that have titles matching similar names in dataset
         matches = df[df['Title'].str.lower().str.contains(title)]
         if not matches.empty:
-            jobs = matches[['Title', 'Position', 'Company', 'Status', 'Job.Description']].to_dict(orient='records')
+            jobs = matches[['Title', 'Company', 'Status', 'Job.Description']].to_dict(orient='records')
             return jobs
         else:
             return "Job title not found in dataset."
@@ -203,6 +192,9 @@ def recommend_jobs():
             return jsonify({'status': 'failure', 'message': 'Job title not found or no recommendations available'}), 404
     except Exception as e:
         return jsonify({'status': 'failure', 'message': str(e)}), 500
+
+if __name__ == '__main__':
+    app.run(debug=True)
 
 
 
