@@ -72,7 +72,7 @@ CORS(app, resources={r"/*": {"origins": "*", "methods": ["GET", "POST"]}})
 
 
 
-app = Flask(__name__)
+
 
 # Sample data in case df.pkl is not available
 sample_data = [
@@ -204,8 +204,6 @@ def recommend_jobs():
     except Exception as e:
         return jsonify({'status': 'failure', 'message': str(e)}), 500
 
-if __name__ == '__main__':
-    app.run(debug=True)
 
 
 
